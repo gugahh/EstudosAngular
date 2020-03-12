@@ -9,4 +9,4 @@ Estudos AngularJs (com Node Server)
 
 > node server.js
 
-__Link no GitHub: ![https://github.com/gugahh/EstudosAngular.git](https://github.com/gugahh/EstudosAngular.git)__
+__Link no GitHub: [https://github.com/gugahh/EstudosAngular.git](https://github.com/gugahh/EstudosAngular.git)__
