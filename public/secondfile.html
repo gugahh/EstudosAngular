@@ -1,0 +1,136 @@
+<html ng-app="todoApp">
+	<head>
+		<title>Página de Teste 2</title>
+		<link rel="stylesheet" href="include/bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" href="include/bootstrap/css/bootstrap-theme.css" />
+		<style type="text/css">
+			.label-sucess {
+				background-color: aquamarine;
+			}
+			.label-warning {
+				background-color: orange;
+			}
+			.label-error {
+				background-color: red;
+			}
+		</style>
+		<script src="include/angular/angular.js"></script>
+		<script src="include/angular/angular-animate.js"></script>
+		<script>
+
+			var model = {
+				user: "Gugahh",
+				items: [{ action: "Buy Flowers", done: false },
+							{ action: "Get Shoes", done: false },
+							{ action: "Collect Tickets", done: true },
+							{ action: "Call Joe Mamma", done: false }]
+			};
+	
+			var todoApp = angular.module("todoApp", []);
+
+			todoApp.controller("toDoCtrl", function ($scope) {
+				$scope.todo = model;
+
+				$scope.addNewItem = function(actionText) {
+					// if (actionText == null || actionText == '') return;
+					$scope.todo.items.push({action: actionText, done: false});
+				}
+
+				$scope.incompleteCount = function() {
+					var count = 0;
+
+					model.items.forEach( item => {
+						if (!item.done) {
+							count++;
+						}
+					});
+
+					return count;
+				};
+
+				$scope.warningLevel = function() {
+					var retorno = null;
+					switch($scope.incompleteCount()) {
+						case 1:
+							retorno = "label-sucess";
+							break;
+						case 2:
+							retorno = "label-warning";
+							break;
+						case 3:
+							retorno = "label-warning";
+							break;
+						default:
+							retorno = "label-error";
+					}
+					return retorno;
+				}
+
+				$scope.resetList = function() {
+					model.items.forEach( item => item.done = false );
+				}
+			});
+			
+	
+		</script>
+	</head>
+	<body ng-controller="toDoCtrl" style="background-color: lightsteelblue">
+		<div class="page-header">
+			<h1>
+				{{todo.user}}'s To Do List
+				<span 
+					class="label label-default"
+					style="font-size: 16pt"
+					ng-class="warningLevel()"
+					ng-hide="incompleteCount() == 0">
+					&nbsp;{{incompleteCount()}}&nbsp;
+				</span>
+			</h1>
+		</div>
+		<div class="panel">
+			<!-- Campo Texto e Botao -->
+			<div class="input-group" style="padding-left: 10px; padding-right: 10px; ">
+				<input class="form-control" 
+					ng-model="actionText" />
+				<span class="input-group-btn">
+					<button class="btn btn-success" 
+						ng-click="addNewItem(actionText)"
+						ng-disabled="actionText == null || actionText.length == 0">
+						Add
+					</button>
+				</span>
+			</div>
+			<table class="table table-striped"
+				ng-hide="incompleteCount() == 0">
+				<thead>
+					<tr>
+						<th>Description</th>
+						<th>Done</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="item in todo.items">
+						<td style="width: 90%; font-weight : {{!item.done ? 'bold' : 'normal'}}">
+							{{item.action}}
+						</td>
+						<td style="width: 10%">
+							<input type="checkbox" ng-model="item.done" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<!-- Contagem de itens completos / incompletos -->
+			<div style="text-align: center;" ng-hide="incompleteCount() == 0">
+				<p>Items: {{todo.items.length}} / Incompletos: <span ng-class="warningLevel()">{{incompleteCount()}}</span></p>
+			</div>
+			<!-- Parabens, todos os itens completos -->
+			<div style="text-align: center;" ng-hide="incompleteCount() > 0">
+				<p>Parabéns! Todos os itens completos.</p>
+				</div>
+			<div class="input-group" style="padding-left: 10px; padding-right: 10px; ">
+				<button class="btn btn-default" ng-click="resetList()">Reset List</button>
+			</div>
+		</div>
+	</body>
+	</html>
+	

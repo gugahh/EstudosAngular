@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html ng-app="sportStore">
+	<head>
+		<title>SportStore</title>
+		<link rel="stylesheet" href="include/bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" href="include/bootstrap/css/bootstrap-theme.css" />
+        <script src="include/angular/angular.js"></script>
+        <script src="include/angular/i18n/angular-locale_pt-br.js"></script>
+		<script src="include/angular/angular-animate.js"></script>
+		<script>
+            angular.module("sportStore", ["customFilters"]);
+        </script>
+        <script src="controllers/sportStore.js"></script>
+        <script src="controllers/productListControllers.js"></script>
+        <script src="filters/customFilters.js"></script>
+	</head>
+	<body ng-controller="sportStoreCtrl">
+		<div class="navbar navbar-inverse">
+            <a class="navbar-brand" href="#">
+                SPORTS STORE
+            </a>
+        </div>
+        <div class="panel panel-defaul row" ng-controller="productListCtrl">
+            <!-- Categorias -->
+            <div class="col-xs-3">
+                <a ng-click="selectCategory()"
+                    class="btn btn-block btn-default btn-lg">
+                    Home
+                </a>
+                <a ng-click="selectCategory(item)" 
+                    ng-repeat="item in data.products | orderBy:'category'| unique:'category'"
+                    class="btn btn-block btn-default btn-lg">
+                    {{item}}
+                </a>
+            </div>
+            <!-- Produtos -->
+            <div class="col-xs-8">
+                <div class="well" ng-repeat="item in data.products | filter:categoryFilterFn">
+                    <h3>
+                        <strong>{{item.name}}</strong>
+                        <span class="pull-right label label-primary">
+                            {{item.price | currency}}
+                        </span>
+                    </h3>
+                    <span class="lead">{{item.description}}</span>
+                </div>
+            </div>
+        </div>
+	</body>
+	</html>
